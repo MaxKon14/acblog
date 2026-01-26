@@ -5,16 +5,16 @@ from rest_framework import serializers
 User = get_user_model()
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'is_staff']
+        fields = ['url', 'id', 'username', 'email', 'is_staff']
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['url', 'name']
+        fields = ['url', 'name', 'slug', 'id', 'is_published', 'created_at']
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -22,6 +22,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
-            'title', 'subtitle', 'text', 'slug', 'pub_date',
+            'id', 'title', 'subtitle', 'text', 'slug', 'pub_date',
             'author', 'category', 'image', 'created_at',
-            'is_published']
+            'is_published'
+        ]
