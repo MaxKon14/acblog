@@ -59,3 +59,16 @@ class Post(BaseModel):
 
     def __str__(self):
         return self.title[:30] + '...' if len(self.title) > 30 else self.title
+
+
+class Subscribers(models.Model):
+    email = models.EmailField(verbose_name='Адрес электронной почты')
+    is_active = models.BooleanField()
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name = 'подписчик'
+        verbose_name_plural = 'Подписчики'
+        ordering = ('-is_active',)
+        default_related_name = 'subscribers_list'
+    def __str__(self):
+        return self.email[:30] + '...' if len(self.email) > 30 else self.email

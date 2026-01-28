@@ -2,12 +2,13 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
 
-from .views import UserViewSet, PostsViewSet, CategoryViewSet
+from .views import UserViewSet, PostsViewSet, CategoryViewSet, SubscriberViewSet
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'posts', PostsViewSet)
 router.register(r'categories', CategoryViewSet)
+router.register(r'subscribers', SubscriberViewSet)
 
 
 urlpatterns = [

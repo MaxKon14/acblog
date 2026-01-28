@@ -1,4 +1,4 @@
-from .models import Post, Category
+from .models import Post, Category, Subscribers
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -34,3 +34,8 @@ class PostSerializer(serializers.ModelSerializer):
             'url', 'id', 'title', 'subtitle', 'text', 'slug', 'pub_date',
             'author', 'category', 'category_ids', 'image', 'created_at', 'is_published'
         ]
+
+class SubscriberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscribers
+        fields = ['url', 'email', 'id', 'is_active', 'subscribed_at']

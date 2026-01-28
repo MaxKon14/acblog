@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Post
+from .models import Category, Post, Subscribers
 
 admin.site.empty_value_display = 'Не задано'
 
@@ -40,5 +40,21 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ( 'category',)
     filter_horizontal = ('category',)
 
+
+class SubscribersAdmin(admin.ModelAdmin):
+    list_display = (
+        'email',
+        'id',
+        'is_active',
+        'subscribed_at',
+    )
+    list_editable = (
+        'is_active',
+    )
+    search_fields = ('email',)
+    list_display_links = ('email',)
+
+
+admin.site.register(Subscribers, SubscribersAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)

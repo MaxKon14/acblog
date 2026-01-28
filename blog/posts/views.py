@@ -1,7 +1,8 @@
 from rest_framework import viewsets
 from django.contrib.auth import get_user_model
-from .serializers import UserSerializer, PostSerializer, CategorySerializer
-from .models import Post, Category
+from rest_framework.permissions import IsAuthenticated
+from .serializers import UserSerializer, PostSerializer, CategorySerializer, SubscriberSerializer
+from .models import Post, Category, Subscribers
 
 User = get_user_model()
 
@@ -17,3 +18,8 @@ class PostsViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+class SubscriberViewSet(viewsets.ModelViewSet):
+    queryset = Subscribers.objects.all()
+    serializer_class = SubscriberSerializer
+    permission_classes = [IsAuthenticated]
