@@ -12,16 +12,25 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     class Meta:
         model = Category
-        fields = ['url', 'name', 'slug', 'id', 'is_published', 'created_at']
+        fields = ['url', 'name', 'slug', 'id', 'is_published', 'created_at', 'posts']
 
 
 class PostSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=True, read_only=True)
+
+    category_ids = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Category.objects.all(),
+        source='category',
+        write_only=True,
+        required=False
+    )
     class Meta:
         model = Post
         fields = [
             'url', 'id', 'title', 'subtitle', 'text', 'slug', 'pub_date',
-            'author', 'category', 'image', 'created_at', 'is_published'
+            'author', 'category', 'category_ids', 'image', 'created_at', 'is_published'
         ]
