@@ -14,10 +14,12 @@ class UserViewSet(viewsets.ModelViewSet):
 class PostsViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    lookup_field = 'slug'
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    lookup_field = 'slug'
 
 class SubscriberViewSet(viewsets.ModelViewSet):
     queryset = Subscribers.objects.all()

@@ -13,6 +13,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    url = serializers.HyperlinkedIdentityField(
+        view_name='post-detail',
+        lookup_field='slug',
+    )
     class Meta:
         model = Category
         fields = ['url', 'name', 'slug', 'id', 'is_published', 'created_at', 'posts']
@@ -27,6 +31,10 @@ class PostSerializer(serializers.ModelSerializer):
         source='category',
         write_only=True,
         required=False
+    )
+    url = serializers.HyperlinkedIdentityField(
+        view_name='post-detail',
+        lookup_field='slug',
     )
     class Meta:
         model = Post
