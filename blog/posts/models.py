@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from pytils.translit import slugify
 
 MAX_LENGTH_OF_TITLE = 50
 MAX_LENGTH_OF_SUBTITLE = 100
@@ -22,7 +23,7 @@ class BaseModel(models.Model):
 
 class Category(BaseModel):
     name = models.CharField(max_length=MAX_LENGTH_OF_CATEGORY_NAME, verbose_name='Название')
-    slug = models.SlugField(unique=True, verbose_name='Идентификатор')
+    slug = models.SlugField(unique=True, verbose_name='Идентификатор', blank=True)
 
     class Meta:
         verbose_name = 'категория'
@@ -31,12 +32,18 @@ class Category(BaseModel):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            max_slug_length = self._meta.get_field('slug').max_length
+            self.slug = slugify(self.name)[:max_slug_length]
+        super().save(*args, **kwargs)
+
 
 class Post(BaseModel):
     title = models.CharField(max_length=MAX_LENGTH_OF_TITLE, verbose_name='Заголовок')
     subtitle = models.CharField(max_length=MAX_LENGTH_OF_SUBTITLE, verbose_name='Подзаголовок')
     text = models.TextField(verbose_name='Текст статьи')
-    slug = models.SlugField(unique=True, verbose_name='Идентификатор')
+    slug = models.SlugField(unique=True, verbose_name='Идентификатор', blank=True)
     pub_date = models.DateTimeField(verbose_name='Дата и время публикации')
     author = models.ForeignKey(
         User,
@@ -59,6 +66,12 @@ class Post(BaseModel):
 
     def __str__(self):
         return self.title[:30] + '...' if len(self.title) > 30 else self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            max_slug_length = self._meta.get_field('slug').max_length
+            self.slug = slugify(self.title)[:max_slug_length]
+        super().save(*args, **kwargs)
 
 
 class Subscribers(models.Model):
