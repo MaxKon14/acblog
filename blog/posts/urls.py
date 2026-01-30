@@ -5,10 +5,10 @@ from rest_framework.authtoken.views import obtain_auth_token
 from .views import UserViewSet, PostsViewSet, CategoryViewSet, SubscriberViewSet
 
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'posts', PostsViewSet)
-router.register(r'categories', CategoryViewSet)
-router.register(r'subscribers', SubscriberViewSet)
+router.register(r'users', UserViewSet, basename='user')
+router.register(r'posts', PostsViewSet, basename='post')
+router.register(r'categories', CategoryViewSet, basename='category')
+router.register(r'subscribers', SubscriberViewSet, basename='subscriber')
 
 
 urlpatterns = [

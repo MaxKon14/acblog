@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     url = serializers.HyperlinkedIdentityField(
-        view_name='post-detail',
+        view_name='category-detail',
         lookup_field='slug',
     )
     class Meta:

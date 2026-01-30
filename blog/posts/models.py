@@ -29,6 +29,7 @@ class Category(BaseModel):
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -45,7 +46,7 @@ class Post(BaseModel):
     subtitle = models.CharField(max_length=MAX_LENGTH_OF_SUBTITLE, verbose_name='Подзаголовок')
     text = models.TextField(verbose_name='Текст статьи')
     slug = models.SlugField(unique=True, verbose_name='Идентификатор', blank=True)
-    pub_date = models.DateTimeField(verbose_name='Дата и время публикации')
+    pub_date = models.DateTimeField(verbose_name='Дата и время публикации', auto_now_add=True)
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
