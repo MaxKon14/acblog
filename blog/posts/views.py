@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import UserSerializer, PostSerializer, CategorySerializer, SubscriberSerializer
 from .models import Post, Category, Subscribers
 
@@ -32,4 +32,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class SubscriberViewSet(viewsets.ModelViewSet):
     queryset = Subscribers.objects.all()
     serializer_class = SubscriberSerializer
-    permission_classes = [IsAuthenticated]
+    def get_permissions(self):
+        if self.action == 'create':
+            return [AllowAny()]
+        return [IsAuthenticated()]

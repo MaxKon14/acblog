@@ -8,6 +8,7 @@ MAX_LENGTH_OF_CATEGORY_NAME = 15
 
 User = get_user_model()
 
+
 class BaseModel(models.Model):
     is_published = models.BooleanField(
         default=True, verbose_name='Опубликовано',
@@ -75,13 +76,15 @@ class Post(BaseModel):
 
 
 class Subscribers(models.Model):
-    email = models.EmailField(verbose_name='Адрес электронной почты')
-    is_active = models.BooleanField()
-    subscribed_at = models.DateTimeField(auto_now_add=True)
+    email = models.EmailField(verbose_name='Адрес электронной почты', unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='Активен')
+    subscribed_at = models.DateTimeField(auto_now_add=True, verbose_name='Добавлен')
+
     class Meta:
         verbose_name = 'подписчик'
         verbose_name_plural = 'Подписчики'
         ordering = ('-is_active',)
         default_related_name = 'subscribers_list'
+
     def __str__(self):
         return self.email[:30] + '...' if len(self.email) > 30 else self.email

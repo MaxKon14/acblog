@@ -47,3 +47,4 @@ class SubscriberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscribers
         fields = ['url', 'email', 'id', 'is_active', 'subscribed_at']
+        read_only_fields = ['is_active', 'subscribed_at']
