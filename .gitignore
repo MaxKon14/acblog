@@ -149,7 +149,4 @@ dmypy.json
 
 # папки со статикой и медиа
 blog/media/
-sent_emails/
-
-blog/db.sqlite3
 /blog/schema.yml
