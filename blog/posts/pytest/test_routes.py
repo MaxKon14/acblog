@@ -1,5 +1,6 @@
+from http import HTTPStatus
+
 import pytest
-from django.utils import timezone
 
 
 @pytest.mark.parametrize(
@@ -14,6 +15,69 @@ from django.utils import timezone
 def test_public_routes(anonymous_client, url, request, post, category):
     url = request.getfixturevalue(url)
     response = anonymous_client.get(url)
-    print(post.pub_date)
-    print(timezone.now())
-    assert response.status_code == 200
+    assert response.status_code == HTTPStatus.OK
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        'subscribers_list_url',
+    ]
+)
+def test_subscribe_available_to_all(anonymous_client, url, request, email_data):
+    url = request.getfixturevalue(url)
+    response = anonymous_client.post(url, data=email_data, format='json')
+    assert response.status_code == HTTPStatus.CREATED
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        'token_url',
+    ]
+)
+def test_receiving_of_token(anonymous_client, url, request, token_data):
+    url = request.getfixturevalue(url)
+    response = anonymous_client.post(url, data=token_data, format='json')
+    assert response.status_code == HTTPStatus.OK
+
+@pytest.mark.parametrize(
+    "url, data_fixture",
+    [
+        ('posts_list_url', 'post_data'),
+        ('categories_list_url', 'category_data'),
+    ]
+)
+@pytest.mark.parametrize(
+    "client, expected_status",
+    [
+        ('author_client', HTTPStatus.CREATED),
+        ('anonymous_client', HTTPStatus.UNAUTHORIZED),
+    ]
+)
+def test_availability_for_post_and_category_adding(client, url, request, data_fixture, expected_status):
+    url = request.getfixturevalue(url)
+    client = request.getfixturevalue(client)
+    data = None
+    if data_fixture:
+        data = request.getfixturevalue(data_fixture)
+    response = client.post(url, data=data, format='json')
+    assert response.status_code == expected_status
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        'subscribers_list_url',
+        'subscriber_detail_url',
+    ]
+)
+@pytest.mark.parametrize(
+    "client, expected_status",
+    [
+        ('author_client', HTTPStatus.OK),
+        ('anonymous_client', HTTPStatus.UNAUTHORIZED),
+    ]
+)
+def test_availability_for_subscribers_list_and_detail(client, url, request, expected_status):
+    url = request.getfixturevalue(url)
+    client = request.getfixturevalue(client)
+    response = client.get(url, format='json')
+    assert response.status_code == expected_status

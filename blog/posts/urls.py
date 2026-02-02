@@ -13,6 +13,6 @@ router.register(r'subscribers', SubscriberViewSet, basename='subscriber')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('token/', obtain_auth_token),
+    path('token/', obtain_auth_token, name='token'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

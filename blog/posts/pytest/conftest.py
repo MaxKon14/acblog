@@ -1,6 +1,5 @@
 import pytest
 from datetime import timedelta
-from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework.test import APIClient
@@ -9,11 +8,18 @@ from rest_framework.authtoken.models import Token
 from posts.models import Category, Post, Subscribers
 
 User = get_user_model()
+PASSWORD = 'test_password'
 
 @pytest.fixture
 def author(django_user_model):
     '''Создание пользователя - автора постов'''
-    return django_user_model.objects.create(username='author')
+    author = django_user_model.objects.create(
+        username='author',
+        is_superuser=True,
+    )
+    author.set_password(PASSWORD)
+    author.save()
+    return author
 
 @pytest.fixture
 def author_client(author):
@@ -65,6 +71,7 @@ def subscriber():
 
 @pytest.fixture(autouse=True)
 def enable_db_access_for_all_tests(db):
+    """Доступ к базе данных для всех тестов"""
     pass
 
 @pytest.fixture
@@ -95,7 +102,7 @@ def subscribers_list_url():
 @pytest.fixture
 def subscriber_detail_url(subscriber):
     """URL деталей подписчика"""
-    return reverse('subscriber-detail', kwargs={'pk': subscriber.id})
+    return reverse('subscriber-detail', args=(subscriber.id,))
 
 @pytest.fixture
 def users_list_url():
@@ -110,4 +117,24 @@ def user_detail_url(author):
 @pytest.fixture
 def token_url():
     """URL получения токена"""
-    return reverse('api_token_auth')
+    return reverse('token')
+
+@pytest.fixture
+def email_data():
+    """Email для создания подписчиков"""
+    return {'email': 'test@test.ru'}
+
+@pytest.fixture
+def post_data(author, category):
+    """Данные для создания поста"""
+    return {'title': 'title', 'subtitle': 'subtitle', 'text': 'text', 'category': category.id, 'author': author.id}
+
+@pytest.fixture
+def category_data():
+    """Данные для создания категории"""
+    return {'name': 'name'}
+
+@pytest.fixture
+def token_data(author):
+    """Данные для получения токена"""
+    return {'username': author.username, 'password': PASSWORD}

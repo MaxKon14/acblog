@@ -34,6 +34,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class SubscriberViewSet(viewsets.ModelViewSet):
     queryset = Subscribers.objects.all()
     serializer_class = SubscriberSerializer
+    lookup_field = 'id'
     def get_permissions(self):
         if self.action == 'create':
             return [AllowAny()]

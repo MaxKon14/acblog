@@ -44,6 +44,10 @@ class PostSerializer(serializers.ModelSerializer):
         ]
 
 class SubscriberSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='subscriber-detail',
+        lookup_field='id',
+    )
     class Meta:
         model = Subscribers
         fields = ['url', 'email', 'id', 'is_active', 'subscribed_at']
