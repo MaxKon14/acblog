@@ -6,6 +6,10 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='user-detail',
+        lookup_field='id',
+    )
     class Meta:
         model = User
         fields = ['url', 'id', 'username', 'email', 'is_staff']
