@@ -55,7 +55,7 @@ def test_only_posts_with_published_categories_in_list(
     response_json = response.json()
     results = response_json['results']
     assert len(results) == 0
-    r = author_client.patch(
+    author_client.patch(
         reverse('category-detail', kwargs={'slug': new_category_slug}),
         data={
             'is_published': True,

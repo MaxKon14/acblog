@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-v*ih3++kz8=^#@56b@#3$5=_xx79)y2_-_5&&#)m%e344c)w)@
 MAX_POSTS_ON_PAGE = 10
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'rest_framework.authtoken',
     'drf_spectacular',
+    'rest_framework_swagger',
 ]
 
 MIDDLEWARE = [
