@@ -22,6 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-v*ih3++kz8=^#@56b@#3$5=_xx79)y2_-_5&&#)m%e344c)w)@'
 
+MAX_POSTS_ON_PAGE = 10
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -140,7 +142,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ) + (('rest_framework.renderers.BrowsableAPIRenderer',) if DEBUG else ()),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': MAX_POSTS_ON_PAGE,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],

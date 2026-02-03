@@ -15,6 +15,7 @@ import pytest
 def test_public_routes(anonymous_client, url, request, post, category):
     url = request.getfixturevalue(url)
     response = anonymous_client.get(url)
+    print(response.content)
     assert response.status_code == HTTPStatus.OK
 
 @pytest.mark.parametrize(
@@ -37,6 +38,7 @@ def test_subscribe_available_to_all(anonymous_client, url, request, email_data):
 def test_receiving_of_token(anonymous_client, url, request, token_data):
     url = request.getfixturevalue(url)
     response = anonymous_client.post(url, data=token_data, format='json')
+    token = response.data['token']
     assert response.status_code == HTTPStatus.OK
 
 @pytest.mark.parametrize(
