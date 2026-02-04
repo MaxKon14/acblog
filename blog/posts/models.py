@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from pytils.translit import slugify
 
 MAX_LENGTH_OF_TITLE = 50
@@ -46,7 +47,7 @@ class Post(BaseModel):
     subtitle = models.CharField(max_length=MAX_LENGTH_OF_SUBTITLE, verbose_name='Подзаголовок')
     text = models.TextField(verbose_name='Текст статьи')
     slug = models.SlugField(unique=True, verbose_name='Идентификатор', blank=True)
-    pub_date = models.DateTimeField(verbose_name='Дата и время публикации', auto_now_add=True)
+    pub_date = models.DateTimeField(verbose_name='Дата и время публикации', default=timezone.now())
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

@@ -1,5 +1,9 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.urls import reverse
+from django.utils import timezone
+
 
 def test_count_posts_on_page(anonymous_client, list_of_posts, posts_list_url):
     response = anonymous_client.get(posts_list_url)
@@ -67,4 +71,21 @@ def test_only_posts_with_published_categories_in_list(
     results = response_json['results']
     assert len(results) == 1
 
-
+def test_only_posts_valid_pub_date_in_list(
+        anonymous_client, author_client, posts_list_url, post_detail_url, post
+):
+    response = anonymous_client.get(posts_list_url)
+    response_json = response.json()
+    results = response_json['results']
+    assert len(results) == 1
+    r = author_client.patch(
+        post_detail_url,
+        data={
+            'pub_date': timezone.now() + timedelta(days=1),
+        },
+        format='json'
+    )
+    response = anonymous_client.get(posts_list_url)
+    response_json = response.json()
+    results = response_json['results']
+    assert len(results) == 0

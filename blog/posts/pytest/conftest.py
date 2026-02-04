@@ -129,16 +129,6 @@ def subscriber_detail_url(subscriber):
     return reverse('subscriber-detail', args=(subscriber.id,))
 
 @pytest.fixture
-def users_list_url():
-    """URL списка пользователей"""
-    return reverse('user-list')
-
-@pytest.fixture
-def user_detail_url(author):
-    """URL деталей пользователя"""
-    return reverse('user-detail', kwargs={'pk': author.id})
-
-@pytest.fixture
 def token_url():
     """URL получения токена"""
     return reverse('token')
