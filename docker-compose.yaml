@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: acblog_db
+  app:
+    image: acblog
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    #command: "/app/.venv/bin/python manage.py migrate && /app/.venv/bin/python manage.py loaddata db.json && /app/.venv/bin/python manage.py runserver 0.0.0.0:8000"
+    #command: sh -c "/app/.venv/bin/python manage.py migrate && /app/.venv/bin/python manage.py runserver 0.0.0.0:8000"
