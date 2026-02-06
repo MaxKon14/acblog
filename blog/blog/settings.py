@@ -94,8 +94,8 @@ DATABASES = {
         "NAME": "acblog_db",
         "USER": "myuser",
         "PASSWORD": "mypassword",
-        #'HOST': 'postgres_container',
-        "HOST": "localhost",
+        "HOST": "postgres_container",
+        # "HOST": "localhost",
         "PORT": "5432",
     }
 }
