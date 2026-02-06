@@ -1,6 +1,13 @@
-import pytest
 from http import HTTPStatus
-from posts.models import MAX_LENGTH_OF_TITLE, MAX_LENGTH_OF_SUBTITLE, MAX_LENGTH_OF_CATEGORY_NAME
+
+import pytest
+
+from posts.models import (
+    MAX_LENGTH_OF_CATEGORY_NAME,
+    MAX_LENGTH_OF_SUBTITLE,
+    MAX_LENGTH_OF_TITLE,
+)
+
 
 @pytest.mark.parametrize("missing_field", ["title", "text"])
 def test_post_creation_requires_fields(
@@ -42,15 +49,23 @@ def test_post_invalid_category_id(author_client, posts_list_url, post_data):
     data["category_ids"] = [999999]
     response = author_client.post(posts_list_url, data, format="json")
     assert response.status_code == HTTPStatus.BAD_REQUEST
-    assert "category" in str(response.data).lower() or "pk" in str(response.data).lower()
+    assert (
+        "category" in str(response.data).lower() or "pk" in str(response.data).lower()
+    )
 
 
-def test_subscriber_email_unique_constraint(anonymous_client, subscribers_list_url, email_data):
-    first_response = anonymous_client.post(subscribers_list_url, email_data, format="json")
+def test_subscriber_email_unique_constraint(
+    anonymous_client, subscribers_list_url, email_data
+):
+    first_response = anonymous_client.post(
+        subscribers_list_url, email_data, format="json"
+    )
     assert first_response.status_code == HTTPStatus.CREATED
 
-    second_response = anonymous_client.post(subscribers_list_url, email_data, format="json")
-    assert second_response.status_code  == HTTPStatus.BAD_REQUEST
+    second_response = anonymous_client.post(
+        subscribers_list_url, email_data, format="json"
+    )
+    assert second_response.status_code == HTTPStatus.BAD_REQUEST
     assert "email" in str(second_response.data).lower()
 
 
@@ -65,21 +80,27 @@ def test_subscriber_email_unique_constraint(anonymous_client, subscribers_list_u
         "user@domain",
         "user@-domain.com",
         "user.name@domain..com",
-    ]
+    ],
 )
-def test_subscriber_invalid_email_formats(anonymous_client, subscribers_list_url, invalid_email):
+def test_subscriber_invalid_email_formats(
+    anonymous_client, subscribers_list_url, invalid_email
+):
     data = {"email": invalid_email}
     response = anonymous_client.post(subscribers_list_url, data, format="json")
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert "email" in str(response.data).lower()
 
 
-def test_post_manual_slug_must_be_unique(author_client, posts_list_url, post, post_data):
+def test_post_manual_slug_must_be_unique(
+    author_client, posts_list_url, post, post_data
+):
     data = post_data.copy()
     data["slug"] = post.slug
     response = author_client.post(posts_list_url, data, format="json")
     assert response.status_code in (HTTPStatus.BAD_REQUEST, HTTPStatus.CONFLICT)
-    assert "slug" in str(response.data).lower() or "unique" in str(response.data).lower()
+    assert (
+        "slug" in str(response.data).lower() or "unique" in str(response.data).lower()
+    )
 
 
 def test_auto_slug_handles_collision(author_client, posts_list_url, post, post_data):
@@ -96,7 +117,7 @@ def test_auto_slug_handles_collision(author_client, posts_list_url, post, post_d
     assert original_title.lower() in new_slug or "post" in new_slug
 
 
-def test_patch_invalid_category_id(author_client, post_detail_url, post):
+def test_patch_invalid_category_id(author_client, post_detail_url):
     invalid_data = {"category_ids": [999999]}
     response = author_client.patch(post_detail_url, invalid_data, format="json")
     assert response.status_code == HTTPStatus.BAD_REQUEST

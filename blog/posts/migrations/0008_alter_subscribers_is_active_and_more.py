@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('posts', '0007_alter_subscribers_email_alter_subscribers_is_active'),
+        ("posts", "0007_alter_subscribers_email_alter_subscribers_is_active"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='subscribers',
-            name='is_active',
-            field=models.BooleanField(default=True, verbose_name='Активен'),
+            model_name="subscribers",
+            name="is_active",
+            field=models.BooleanField(default=True, verbose_name="Активен"),
         ),
         migrations.AlterField(
-            model_name='subscribers',
-            name='subscribed_at',
-            field=models.DateTimeField(auto_now_add=True, verbose_name='Добавлен'),
+            model_name="subscribers",
+            name="subscribed_at",
+            field=models.DateTimeField(auto_now_add=True, verbose_name="Добавлен"),
         ),
     ]

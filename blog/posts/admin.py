@@ -1,7 +1,8 @@
 from django.contrib import admin
+
 from .models import Category, Post, Subscribers
 
-admin.site.empty_value_display = 'Не задано'
+admin.site.empty_value_display = "Не задано"
 
 
 class PostInline(admin.TabularInline):
@@ -11,48 +12,44 @@ class PostInline(admin.TabularInline):
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
-        'name',
-        'is_published',
-        'slug',
-        'created_at',
+        "name",
+        "is_published",
+        "slug",
+        "created_at",
     )
-    list_editable = (
-        'is_published',
-    )
-    search_fields = ('name',)
-    list_display_links = ('name',)
-    inlines = [PostInline,]
+    list_editable = ("is_published",)
+    search_fields = ("name",)
+    list_display_links = ("name",)
+    inlines = [
+        PostInline,
+    ]
 
 
 class PostAdmin(admin.ModelAdmin):
     list_display = (
-        'title',
-        'id',
-        'is_published',
-        'pub_date',
-        'author',
+        "title",
+        "id",
+        "is_published",
+        "pub_date",
+        "author",
     )
-    list_editable = (
-        'is_published',
-    )
-    search_fields = ('title',)
-    list_display_links = ('title',)
-    list_filter = ( 'category',)
-    filter_horizontal = ('category',)
+    list_editable = ("is_published",)
+    search_fields = ("title",)
+    list_display_links = ("title",)
+    list_filter = ("category",)
+    filter_horizontal = ("category",)
 
 
 class SubscribersAdmin(admin.ModelAdmin):
     list_display = (
-        'email',
-        'id',
-        'is_active',
-        'subscribed_at',
+        "email",
+        "id",
+        "is_active",
+        "subscribed_at",
     )
-    list_editable = (
-        'is_active',
-    )
-    search_fields = ('email',)
-    list_display_links = ('email',)
+    list_editable = ("is_active",)
+    search_fields = ("email",)
+    list_display_links = ("email",)
 
 
 admin.site.register(Subscribers, SubscribersAdmin)

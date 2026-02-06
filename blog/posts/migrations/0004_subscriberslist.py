@@ -4,24 +4,36 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('posts', '0003_post_image'),
+        ("posts", "0003_post_image"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SubscribersList',
+            name="SubscribersList",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254, verbose_name='Адрес электронной почты')),
-                ('is_active', models.BooleanField()),
-                ('subscribed_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        max_length=254, verbose_name="Адрес электронной почты"
+                    ),
+                ),
+                ("is_active", models.BooleanField()),
+                ("subscribed_at", models.DateTimeField(auto_now_add=True)),
             ],
             options={
-                'verbose_name': 'подписчик',
-                'verbose_name_plural': 'Подписчики',
-                'ordering': ('-is_active',),
+                "verbose_name": "подписчик",
+                "verbose_name_plural": "Подписчики",
+                "ordering": ("-is_active",),
             },
         ),
     ]

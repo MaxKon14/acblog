@@ -1,29 +1,32 @@
-from .models import Post, Category, Subscribers
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
+from .models import Category, Post, Subscribers
 
 User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='user-detail',
-        lookup_field='id',
+        view_name="user-detail",
+        lookup_field="id",
     )
+
     class Meta:
         model = User
-        fields = ['url', 'id', 'username', 'email', 'is_staff']
+        fields = ["url", "id", "username", "email", "is_staff"]
 
 
 class CategorySerializer(serializers.ModelSerializer):
     posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     url = serializers.HyperlinkedIdentityField(
-        view_name='category-detail',
-        lookup_field='slug',
+        view_name="category-detail",
+        lookup_field="slug",
     )
+
     class Meta:
         model = Category
-        fields = ['url', 'name', 'slug', 'id', 'is_published', 'created_at', 'posts']
+        fields = ["url", "name", "slug", "id", "is_published", "created_at", "posts"]
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -32,27 +35,41 @@ class PostSerializer(serializers.ModelSerializer):
     category_ids = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=Category.objects.all(),
-        source='category',
+        source="category",
         write_only=True,
-        required=False
+        required=False,
     )
     url = serializers.HyperlinkedIdentityField(
-        view_name='post-detail',
-        lookup_field='slug',
+        view_name="post-detail",
+        lookup_field="slug",
     )
+
     class Meta:
         model = Post
         fields = [
-            'url', 'id', 'title', 'subtitle', 'text', 'slug', 'pub_date',
-            'author', 'category', 'category_ids', 'image', 'created_at', 'is_published'
+            "url",
+            "id",
+            "title",
+            "subtitle",
+            "text",
+            "slug",
+            "pub_date",
+            "author",
+            "category",
+            "category_ids",
+            "image",
+            "created_at",
+            "is_published",
         ]
+
 
 class SubscriberSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='subscriber-detail',
-        lookup_field='id',
+        view_name="subscriber-detail",
+        lookup_field="id",
     )
+
     class Meta:
         model = Subscribers
-        fields = ['url', 'email', 'id', 'is_active', 'subscribed_at']
-        read_only_fields = ['is_active', 'subscribed_at']
+        fields = ["url", "email", "id", "is_active", "subscribed_at"]
+        read_only_fields = ["is_active", "subscribed_at"]

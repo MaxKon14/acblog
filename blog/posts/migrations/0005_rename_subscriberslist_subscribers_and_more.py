@@ -4,18 +4,22 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('posts', '0004_subscriberslist'),
+        ("posts", "0004_subscriberslist"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='SubscribersList',
-            new_name='Subscribers',
+            old_name="SubscribersList",
+            new_name="Subscribers",
         ),
         migrations.AlterModelOptions(
-            name='subscribers',
-            options={'default_related_name': 'subscribers_list', 'ordering': ('-is_active',), 'verbose_name': 'подписчик', 'verbose_name_plural': 'Подписчики'},
+            name="subscribers",
+            options={
+                "default_related_name": "subscribers_list",
+                "ordering": ("-is_active",),
+                "verbose_name": "подписчик",
+                "verbose_name_plural": "Подписчики",
+            },
         ),
     ]

@@ -4,20 +4,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('posts', '0006_alter_category_slug_alter_post_slug'),
+        ("posts", "0006_alter_category_slug_alter_post_slug"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='subscribers',
-            name='email',
-            field=models.EmailField(max_length=254, unique=True, verbose_name='Адрес электронной почты'),
+            model_name="subscribers",
+            name="email",
+            field=models.EmailField(
+                max_length=254, unique=True, verbose_name="Адрес электронной почты"
+            ),
         ),
         migrations.AlterField(
-            model_name='subscribers',
-            name='is_active',
+            model_name="subscribers",
+            name="is_active",
             field=models.BooleanField(default=True),
         ),
     ]
