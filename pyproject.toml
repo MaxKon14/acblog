@@ -20,4 +20,4 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"blog/posts/pytest/test_content.py" = ["ARG001"]
+"blog/posts/pytest/*.py" = ["ARG001"]
