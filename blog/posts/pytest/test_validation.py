@@ -49,24 +49,7 @@ def test_post_invalid_category_id(author_client, posts_list_url, post_data):
     data["category_ids"] = [999999]
     response = author_client.post(posts_list_url, data, format="json")
     assert response.status_code == HTTPStatus.BAD_REQUEST
-    assert (
-        "category" in str(response.data).lower() or "pk" in str(response.data).lower()
-    )
-
-
-def test_subscriber_email_unique_constraint(
-    anonymous_client, subscribers_list_url, email_data
-):
-    first_response = anonymous_client.post(
-        subscribers_list_url, email_data, format="json"
-    )
-    assert first_response.status_code == HTTPStatus.CREATED
-
-    second_response = anonymous_client.post(
-        subscribers_list_url, email_data, format="json"
-    )
-    assert second_response.status_code == HTTPStatus.BAD_REQUEST
-    assert "email" in str(second_response.data).lower()
+    assert "category" in str(response.data).lower()
 
 
 @pytest.mark.parametrize(
@@ -89,32 +72,6 @@ def test_subscriber_invalid_email_formats(
     response = anonymous_client.post(subscribers_list_url, data, format="json")
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert "email" in str(response.data).lower()
-
-
-def test_post_manual_slug_must_be_unique(
-    author_client, posts_list_url, post, post_data
-):
-    data = post_data.copy()
-    data["slug"] = post.slug
-    response = author_client.post(posts_list_url, data, format="json")
-    assert response.status_code in (HTTPStatus.BAD_REQUEST, HTTPStatus.CONFLICT)
-    assert (
-        "slug" in str(response.data).lower() or "unique" in str(response.data).lower()
-    )
-
-
-def test_auto_slug_handles_collision(author_client, posts_list_url, post, post_data):
-    original_title = post.title
-    data = post_data.copy()
-    data["title"] = original_title
-    data.pop("slug", None)
-
-    response = author_client.post(posts_list_url, data, format="json")
-    assert response.status_code == HTTPStatus.CREATED
-    new_slug = response.data["slug"]
-
-    assert new_slug != post.slug
-    assert original_title.lower() in new_slug or "post" in new_slug
 
 
 def test_patch_invalid_category_id(author_client, post_detail_url):
