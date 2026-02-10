@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from rest_framework import viewsets
@@ -11,6 +13,8 @@ from .serializers import (
     UserSerializer,
 )
 
+logger = logging.getLogger(__name__)
+logger.debug("тест")
 User = get_user_model()
 
 

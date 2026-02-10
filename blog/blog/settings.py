@@ -102,8 +102,8 @@ DATABASES = {
         "NAME": os.getenv("POSTGRES_DB"),
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": "postgres_container",
-        # "HOST": "localhost",
+        # "HOST": "postgres_container",
+        "HOST": "localhost",
         "PORT": "5432",
     }
 }
@@ -166,4 +166,23 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "list of api for acblog",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "debug.log",
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
 }
