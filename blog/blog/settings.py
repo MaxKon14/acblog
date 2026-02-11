@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-v*ih3++kz8=^#@56b@#3$5=_xx79)y2_-_5&&#)m%e344c)w)@
 MAX_POSTS_ON_PAGE = 10
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -102,8 +102,8 @@ DATABASES = {
         "NAME": os.getenv("POSTGRES_DB"),
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        # "HOST": "postgres_container",
-        "HOST": "localhost",
+        "HOST": "postgres_container",
+        # "HOST": "localhost",
         "PORT": "5432",
     }
 }
@@ -163,19 +163,46 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "ACBLOG API",
-    "DESCRIPTION": "list of api for acblog",
+    "DESCRIPTION": (
+        "REST API системы управления блогом ACBLOG.\n\n"
+        "Позволяет:\n"
+        "• создавать, редактировать, удалять и получать посты\n"
+        "• управлять категориями / рубриками\n"
+        "• работать с базой email-подписчиков\n"
+        "• получать списки пользователей (только для администраторов)\n\n"
+        "Все защищённые методы требуют заголовок:\n"
+        "```\n"
+        "Authorization: Token <ваш_токен>\n"
+        "```\n\n"
+        "Текущая версия — v1 (февраль 2026)"
+    ),
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": r"/api/v1",
+    "TAGS": [
+        {"name": "token", "description": "Получение токена"},
+        {"name": "posts", "description": "Статьи блога"},
+        {"name": "categories", "description": "Категории публикаций"},
+        {"name": "subscribers", "description": "Подписчики на рассылку (email)"},
+        {"name": "users", "description": "Пользователи системы (авторы, админы)"},
+    ],
 }
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{name} {levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+    },
     "handlers": {
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
             "filename": "debug.log",
+            "formatter": "verbose",
         },
     },
     "loggers": {
