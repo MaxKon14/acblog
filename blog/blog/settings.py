@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-v*ih3++kz8=^#@56b@#3$5=_xx79)y2_-_5&&#)m%e344c)w)@
 MAX_POSTS_ON_PAGE = 10
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -102,8 +102,8 @@ DATABASES = {
         "NAME": os.getenv("POSTGRES_DB"),
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": "postgres_container",
-        # "HOST": "localhost",
+        # "HOST": "postgres_container",
+        "HOST": "localhost",
         "PORT": "5432",
     }
 }
@@ -144,6 +144,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
 
 
 REST_FRAMEWORK = {

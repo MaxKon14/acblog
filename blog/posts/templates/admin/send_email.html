@@ -1,0 +1,158 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  .send-email-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+  }
+  .send-email-form {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .form-row {
+    margin-bottom: 1.8rem;
+  }
+  .form-row label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  textarea {
+    min-height: 180px;
+    resize: vertical;
+  }
+  .help-text {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+  }
+  .selected-count {
+    background: #e0f2fe;
+    color: #1e40af;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+  .recipients-list {
+    max-height: 160px;
+    overflow-y: auto;
+    padding: 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .submit-row {
+    text-align: right;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+  }
+  .submit-row input {
+    padding: 10px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .cancel-link {
+    margin-right: 1.5rem;
+    color: #4b5563;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .cancel-link:hover {
+    color: #1f2937;
+    text-decoration: underline;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="send-email-container">
+  <h1>{% trans "Отправить email" %}</h1>
+
+  <div class="selected-count">
+    Выбрано получателей: <strong>{{ queryset.count }}</strong>
+  </div>
+
+  <form method="post" class="send-email-form">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="errors">
+        {% for error in form.non_field_errors %}
+          <p class="errornote">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if form.errors %}
+      <div class="errors">
+        {% for field, errors in form.errors.items %}
+          {% for error in errors %}
+            <p class="errornote">{{ field }}: {{ error }}</p>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="form-row">
+      <label for="{{ form.subject.id_for_label }}">Тема письма:</label>
+      {{ form.subject }}
+      {{ form.subject.errors }}
+    </div>
+
+    <div class="form-row">
+      <label for="{{ form.message.id_for_label }}">Текст письма (HTML):</label>
+      {{ form.message }}
+      {{ form.message.errors }}
+      <div class="help-text">
+        Поддерживается HTML. Можно использовать простые теги: &lt;b&gt;, &lt;i&gt;, &lt;a href=""&gt;, &lt;p&gt;, &lt;br&gt;, &lt;h2&gt; и т.д.
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>Получатели (только для информации):</label>
+      <div class="recipients-list">
+        {% for obj in queryset %}
+          {{ obj.email }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+          (никто не выбран)
+        {% endfor %}
+      </div>
+
+      <!-- Передаём выбранные объекты в POST -->
+      {% for obj in queryset %}
+        <input type="hidden" name="_selected_action" value="{{ obj.pk }}" />
+      {% endfor %}
+
+      <!-- Скрытое поле формы (на всякий случай) -->
+      {{ form.subscribers }}
+    </div>
+
+    <div class="submit-row">
+      <input type="hidden" name="action" value="send_email" />
+      <a href="{% url opts|admin_urlname:'changelist' %}" class="cancel-link">Отмена</a>
+      <input type="submit" name="apply" value="Отправить письмо" class="default">
+    </div>
+  </form>
+</div>
+{% endblock %}
